@@ -83,11 +83,26 @@ h3.sub{font-size:13px;font-weight:500;color:var(--muted);letter-spacing:.08em;ma
 .kit td:first-child{color:var(--muted);width:40%}
 @media(min-width:860px){.kit{grid-template-columns:5fr 7fr;gap:40px}}
 
-.gallery{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+/* 左右滑動：照片、合作形式。下一張露出一角，提示可以滑 */
+.slider{position:relative}
+.track{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:2px 0 6px}
+.track::-webkit-scrollbar{display:none}
+.track>*{flex:0 0 78%;scroll-snap-align:start}
+.track.cards>*{flex-basis:82%}
+@media(min-width:620px){.track>*{flex-basis:44%}.track.cards>*{flex-basis:46%}.track{gap:14px}}
+@media(min-width:960px){.track>*{flex-basis:31.5%}.track.cards>*{flex-basis:31.5%}}
+.track.cards .card{display:flex;flex-direction:column}
+.sl-ctrl{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px}
+.sl-dots{display:flex;gap:6px;flex-wrap:wrap}
+.sl-dots button{width:7px;height:7px;padding:0;border:0;border-radius:999px;background:var(--line);cursor:pointer;transition:width .25s,background .25s}
+.sl-dots button.on{width:20px;background:var(--soy-deep)}
+.sl-nav{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted)}
+.sl-nav button{width:36px;height:36px;border:1px solid var(--line);background:#fff;border-radius:999px;font:inherit;font-size:16px;line-height:1;color:var(--ink);cursor:pointer}
+.sl-nav button:disabled{opacity:.35;cursor:default}
+.sl-nav button:not(:disabled):hover{border-color:var(--ink)}
 .gallery a{display:block;border-radius:12px;overflow:hidden;aspect-ratio:3/4;background:#eee}
 .gallery img{width:100%;height:100%;object-fit:cover;object-position:50% 20%;transition:transform .4s}
 .gallery a:hover img{transform:scale(1.03)}
-@media(min-width:620px){.gallery{grid-template-columns:repeat(3,1fr);gap:14px}}
 .contact .card{display:flex;flex-direction:column;gap:6px}
 .contact .card b{font-weight:500}
 .contact .card .formbtn{align-self:flex-start;margin:4px 0 2px;font-size:13.5px;padding:7px 16px}
@@ -97,6 +112,9 @@ h3.sub{font-size:13px;font-weight:500;color:var(--muted);letter-spacing:.08em;ma
 .lb-wrap.on{display:flex}
 .lb-wrap img{max-width:100%;max-height:calc(100vh - 80px);border-radius:8px;box-shadow:0 10px 40px rgba(0,0,0,.4)}
 .lb-bar{position:absolute;top:12px;right:14px;display:flex;gap:10px}
+.lb-prev,.lb-next{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border:0;border-radius:999px;background:rgba(255,255,255,.14);color:#fff;font-size:22px;cursor:pointer}
+.lb-prev{left:10px}.lb-next{right:10px}
+.lb-count{position:absolute;bottom:14px;left:0;right:0;text-align:center;color:rgba(255,255,255,.8);font-size:13px}
 .lb-bar a,.lb-bar button{background:rgba(255,255,255,.14);color:#fff;border:0;border-radius:999px;padding:6px 14px;font:inherit;font-size:13px;cursor:pointer}
 footer{padding:36px 0 48px;color:var(--muted);font-size:12.5px;text-align:center;border-top:1px solid var(--line)}
 footer .brand{color:var(--ink);margin-bottom:6px}
@@ -173,13 +191,15 @@ html.en [data-zh]{display:none !important}
 <section id="gallery">
   <div class="wrap">
     <h2>Photos<em data-zh>照片</em><em data-en>Photos</em></h2>
-    <div class="gallery">
+    <div class="slider">
+    <div class="track gallery">
       <a class="lb" href="img/j1.jpg" target="_blank" rel="noopener"><img src="img/j1.jpg" alt="Jessica 01"></a>
       <a class="lb" href="img/x691.jpg" target="_blank" rel="noopener"><img src="img/x691.jpg" alt="Jessica 02"></a>
       <a class="lb" href="img/j11.jpg" target="_blank" rel="noopener"><img src="img/j11.jpg" alt="Jessica 03"></a>
       <a class="lb" href="img/p263.jpg" target="_blank" rel="noopener"><img src="img/p263.jpg" alt="Jessica 04"></a>
       <a class="lb" href="img/j6.jpg" target="_blank" rel="noopener"><img src="img/j6.jpg" alt="Jessica 05"></a>
       <a class="lb" href="img/p76.jpg" target="_blank" rel="noopener"><img src="img/p76.jpg" alt="Jessica 06"></a>
+    </div>
     </div>
     <p class="note" data-zh>棚拍。更多風格與商業作品請見 Instagram。</p>
     <p class="note" data-en>Studio shots. More looks and commercial work on Instagram.</p>
@@ -189,13 +209,15 @@ html.en [data-zh]{display:none !important}
 <section id="services">
   <div class="wrap">
     <h2>Services<em data-zh>合作形式</em><em data-en>What I do</em></h2>
-    <div class="grid c3">
+    <div class="slider">
+    <div class="track cards">
       <div class="card"><h3 data-zh>短影音業配</h3><h3 data-en>Short-form video</h3><p data-zh>Instagram Reels／Threads，口播、開箱、探店、體驗，含腳本討論與字幕。</p><p data-en>Instagram Reels / Threads: voice-over, unboxing, store visits, experiences. Script discussion and subtitles included.</p></div>
       <div class="card"><h3 data-zh>圖文開箱</h3><h3 data-en>Photo &amp; copy</h3><p data-zh>IG 貼文與限時動態，產品情境照與使用心得。</p><p data-en>IG posts and stories with product lifestyle photos and honest reviews.</p></div>
       <div class="card"><h3 data-zh>商業影片出鏡</h3><h3 data-en>Commercial talent</h3><p data-zh>品牌形象片、產品影片的鏡頭出演，可配合拍攝團隊與腳本。</p><p data-en>On-camera talent for brand films and product videos, working to your script and crew.</p></div>
       <div class="card"><h3 data-zh>品牌活動・展場</h3><h3 data-en>Brand events &amp; trade shows</h3><p data-zh>現場產品介紹、與來賓互動、品牌推廣。</p><p data-en>On-site product presentation, audience interaction and brand promotion.</p></div>
       <div class="card"><h3 data-zh>商務活動主持</h3><h3 data-en>Event hosting</h3><p data-zh>品牌活動、商務場合主持，中／英，可配合海外行程。</p><p data-en>Hosting for brand and business events in Mandarin or English; available for overseas schedules.</p></div>
       <div class="card"><h3 data-zh>海外拍攝</h3><h3 data-en>Overseas shoots</h3><p data-zh>可配合跨國商業影片與海外拍攝行程。</p><p data-en>Available for cross-border commercial video and overseas shooting schedules.</p></div>
+    </div>
     </div>
   </div>
 </section>
@@ -261,7 +283,7 @@ html.en [data-zh]{display:none !important}
   </div>
 </section>
 
-<div class="lb-wrap" id="lb" role="dialog" aria-modal="true" aria-label="放大檢視"><div class="lb-bar"><a id="lbOpen" href="#" target="_blank" rel="noopener"><span data-zh>開新分頁</span><span data-en>Open</span></a><button id="lbClose" type="button"><span data-zh>關閉</span><span data-en>Close</span></button></div><img id="lbImg" alt=""></div>
+<div class="lb-wrap" id="lb" role="dialog" aria-modal="true" aria-label="放大檢視"><div class="lb-bar"><a id="lbOpen" href="#" target="_blank" rel="noopener"><span data-zh>開新分頁</span><span data-en>Open</span></a><button id="lbClose" type="button"><span data-zh>關閉</span><span data-en>Close</span></button></div><button class="lb-prev" id="lbPrev" type="button" aria-label="上一張">‹</button><img id="lbImg" alt=""><button class="lb-next" id="lbNext" type="button" aria-label="下一張">›</button><div class="lb-count" id="lbCount"></div></div>
 
 <footer>
   <div class="brand">JESSICA HUANG</div>
@@ -297,15 +319,42 @@ document.addEventListener("click", e=>{
   el.scrollIntoView({behavior:"smooth", block:"start"});
 });
 
-// 照片、試鏡卡：頁面上放大
+// 左右滑動：箭頭、圓點、張數
+document.querySelectorAll(".slider").forEach(sl=>{
+  const tr=sl.querySelector(".track"), items=[...tr.children];
+  const ctrl=document.createElement("div"); ctrl.className="sl-ctrl";
+  ctrl.innerHTML='<div class="sl-dots"></div><div class="sl-nav"><span class="sl-n"></span><button type="button" class="sl-p" aria-label="上一張">‹</button><button type="button" class="sl-x" aria-label="下一張">›</button></div>';
+  sl.appendChild(ctrl);
+  const dots=ctrl.querySelector(".sl-dots"), n=ctrl.querySelector(".sl-n"), p=ctrl.querySelector(".sl-p"), x=ctrl.querySelector(".sl-x");
+  items.forEach((it,i)=>{ const d=document.createElement("button"); d.type="button"; d.setAttribute("aria-label", String(i+1)); d.onclick=()=>go(i); dots.appendChild(d); });
+  const go=i=>{ i=Math.max(0,Math.min(items.length-1,i)); tr.scrollTo({left:items[i].offsetLeft-items[0].offsetLeft}); setTimeout(upd,450); };
+  const cur=()=>{ const l=tr.scrollLeft; let b=0,bd=1e9; items.forEach((it,i)=>{ const d=Math.abs(it.offsetLeft-items[0].offsetLeft-l); if(d<bd){bd=d;b=i;} }); return b; };
+  const upd=()=>{ const c=cur(), end=tr.scrollLeft+tr.clientWidth>=tr.scrollWidth-4;
+    [...dots.children].forEach((d,i)=>d.classList.toggle("on", i===c));
+    n.textContent=(c+1)+" / "+items.length; p.disabled=tr.scrollLeft<=4; x.disabled=end; };
+  p.onclick=()=>go(cur()-1); x.onclick=()=>go(cur()+1);
+  tr.addEventListener("scroll", upd, {passive:true});
+  window.addEventListener("resize", upd); upd();
+});
+
+// 照片、試鏡卡：頁面上放大；照片可以在放大畫面裡左右換
 const lb=document.getElementById("lb"), lbImg=document.getElementById("lbImg"), lbOpen=document.getElementById("lbOpen");
+const lbPrev=document.getElementById("lbPrev"), lbNext=document.getElementById("lbNext"), lbCount=document.getElementById("lbCount");
+let lbSet=[], lbI=0;
+function showLb(i){ lbI=(i+lbSet.length)%lbSet.length; const a=lbSet[lbI];
+  lbImg.src=a.getAttribute("href"); lbImg.alt=(a.querySelector("img")||{}).alt||""; lbOpen.href=a.getAttribute("href");
+  const many=lbSet.length>1; lbPrev.hidden=!many; lbNext.hidden=!many; lbCount.textContent=many?(lbI+1)+" / "+lbSet.length:""; }
 document.querySelectorAll("a.lb").forEach(a=>a.addEventListener("click", e=>{
-  e.preventDefault(); lbImg.src=a.getAttribute("href"); lbImg.alt=(a.querySelector("img")||{}).alt||""; lbOpen.href=a.getAttribute("href"); lb.classList.add("on");
+  e.preventDefault(); const g=a.closest(".gallery"); lbSet=g?[...g.querySelectorAll("a.lb")]:[a]; showLb(lbSet.indexOf(a)); lb.classList.add("on");
 }));
 function closeLb(){ lb.classList.remove("on"); lbImg.removeAttribute("src"); }
 document.getElementById("lbClose").onclick=closeLb;
+lbPrev.onclick=()=>showLb(lbI-1); lbNext.onclick=()=>showLb(lbI+1);
 lb.addEventListener("click", e=>{ if(e.target===lb) closeLb(); });
-document.addEventListener("keydown", e=>{ if(e.key==="Escape") closeLb(); });
+let tx=null; lb.addEventListener("touchstart", e=>{ tx=e.touches[0].clientX; }, {passive:true});
+lb.addEventListener("touchend", e=>{ if(tx===null) return; const dx=e.changedTouches[0].clientX-tx; tx=null; if(Math.abs(dx)>40 && lbSet.length>1) showLb(lbI+(dx<0?1:-1)); });
+document.addEventListener("keydown", e=>{ if(!lb.classList.contains("on")) return;
+  if(e.key==="Escape") closeLb(); else if(e.key==="ArrowRight") showLb(lbI+1); else if(e.key==="ArrowLeft") showLb(lbI-1); });
 
 // 複製 Email（手機沒設定郵件 app 時用）
 document.getElementById("copyMail").onclick=function(){
